@@ -28,8 +28,9 @@ public class MarketNameBiz implements MarketNameApiService {
             MarketNameEntity marketName = new MarketNameEntity();
             marketName.setStoreId(storeId);
             marketName.setEnable(0);
-            marketName.setMarketName(MarketNameEnums.getMarketName(nameBo.getMarketCode()));
-            marketName.setMarketCode(nameBo.getMarketCode());
+            MarketNameEnums codeEn = nameBo.getCodeEn();
+            marketName.setMarketName(codeEn.getName());
+            marketName.setMarketCode(codeEn.getCode());
             list.add(marketName);
         }
         return nameService.saveBatch(list);

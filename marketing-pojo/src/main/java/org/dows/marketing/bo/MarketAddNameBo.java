@@ -2,6 +2,7 @@ package org.dows.marketing.bo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.dows.marketing.enums.MarketNameEnums;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +18,7 @@ public class MarketAddNameBo implements Serializable {
 
 
     @ApiModelProperty(value = "营销code")
-    private String marketCode;
+    private MarketNameEnums codeEn;
 
     @ApiModelProperty(value = "适用门店")
     private List<Long> storeIds;
