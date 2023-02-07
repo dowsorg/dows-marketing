@@ -4,7 +4,7 @@
     <parent>
         <artifactId>dows-marketing</artifactId>
         <groupId>org.dows.saas</groupId>
-        <version>20220701</version>
+        <version>20220701-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -16,12 +16,12 @@
         <dependency>
             <artifactId>marketing-api</artifactId>
             <groupId>org.dows.saas</groupId>
-            <version>20220701</version>
+            <version>20220701-SNAPSHOT</version>
         </dependency>
         <dependency>
             <artifactId>marketing-pojo</artifactId>
             <groupId>org.dows.saas</groupId>
-            <version>20220701</version>
+            <version>20220701-SNAPSHOT</version>
         </dependency>
 
         <dependency>

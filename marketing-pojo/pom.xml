@@ -4,13 +4,21 @@
     <parent>
         <artifactId>dows-marketing</artifactId>
         <groupId>org.dows.saas</groupId>
-        <version>20220701</version>
+        <version>20220701-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>marketing-pojo</artifactId>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>
