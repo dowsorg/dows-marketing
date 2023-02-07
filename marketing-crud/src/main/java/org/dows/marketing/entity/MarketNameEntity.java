@@ -2,10 +2,7 @@ package org.dows.marketing.entity;
 
 import java.util.Date;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,7 +30,7 @@ import org.dows.framework.crud.mybatis.CrudEntity;
 @TableName("market_name")
 public class MarketNameEntity implements CrudEntity {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")
     private Long id;
 
@@ -41,7 +38,13 @@ public class MarketNameEntity implements CrudEntity {
     private Long categoryId;
 
     @ApiModelProperty("营销名称ID")
-    private String marketNameId;
+    private Long marketNameId;
+
+    @ApiModelProperty("门店id")
+    private Long storeId;
+
+    @ApiModelProperty("是否启用 0:启用 1:禁用")
+    private Integer enable;
 
     @ApiModelProperty("类目名称")
     private String categoryName;
@@ -64,7 +67,6 @@ public class MarketNameEntity implements CrudEntity {
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("时间戳")
     private Date dt;
-
 
     @JsonIgnore
     @TableLogic
