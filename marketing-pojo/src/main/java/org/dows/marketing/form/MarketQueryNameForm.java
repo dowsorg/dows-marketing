@@ -15,7 +15,7 @@ import java.util.List;
  * @author liuhonger
  */
 @Data
-public class MarketAddNameForm implements Serializable {
+public class MarketQueryNameForm implements Serializable {
 
     private static final long serialVersionUID = -8267103559153458652L;
 
@@ -26,10 +26,8 @@ public class MarketAddNameForm implements Serializable {
 
 
     @NotNull(message = "适用门店不能为空!")
-    @Size(min = 1,message = "适用门店不能为空")
     @ApiModelProperty(value = "适用门店")
-    private List<Long> storeIds;
-
+    private Long storeId;
 
 
 

@@ -38,13 +38,10 @@ public class MarketNameEntity implements CrudEntity {
     private Long categoryId;
 
     @ApiModelProperty("营销名称ID")
-    private Long marketNameId;
+    private String marketNameId;
 
     @ApiModelProperty("门店id")
     private Long storeId;
-
-    @ApiModelProperty("是否启用 0:启用 1:禁用")
-    private Integer enable;
 
     @ApiModelProperty("类目名称")
     private String categoryName;
@@ -54,6 +51,9 @@ public class MarketNameEntity implements CrudEntity {
 
     @ApiModelProperty("营销英文名")
     private String marketCode;
+
+    @ApiModelProperty("类型")
+    private Integer type;
 
     @ApiModelProperty("图标")
     private String icon;
@@ -69,7 +69,7 @@ public class MarketNameEntity implements CrudEntity {
     private Date dt;
 
     @JsonIgnore
-    @TableLogic
+    //@TableLogic
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("逻辑删除")
     private Boolean deleted;

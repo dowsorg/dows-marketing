@@ -38,7 +38,7 @@ public class MarketCategoryEntity implements CrudEntity {
     private Long pid;
 
     @ApiModelProperty("分类名称如：1:获客拉新、2:下单转化、3:提高客单、4:复购留存、5:....(数据字典获取)")
-    private Integer categoryName;
+    private String categoryName;
 
     @ApiModelProperty("类目码")
     private Integer categoryCode;

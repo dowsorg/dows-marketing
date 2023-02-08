@@ -66,7 +66,7 @@ public class MarketAttrNameEntity implements CrudEntity {
     private Date dt;
 
     @JsonIgnore
-    @TableLogic
+    //@TableLogic
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("逻辑删除")
     private Boolean deleted;
