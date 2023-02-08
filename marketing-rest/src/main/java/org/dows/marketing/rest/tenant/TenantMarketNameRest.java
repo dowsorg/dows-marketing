@@ -29,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("tenant/marketName")
-public class MarketNameRest implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
+public class TenantMarketNameRest implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
 
 
     private final MarketNameApiService nameApiService;
