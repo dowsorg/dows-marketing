@@ -2,11 +2,9 @@ package org.dows.marketing.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.dows.marketing.bo.MarketCardAttrValBo;
-import org.dows.marketing.bo.MarketIntegralAttValBo;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
@@ -36,26 +34,19 @@ public enum MarketNameEnums {
         return null;
     }
 
-    public static String[] cardAttrName = new String[]{"recharge","amount"};
-    public static Map<String,String> getCardAttrVal(MarketCardAttrValBo attrValBo){
-        Map<String, String> cardMap = new HashMap<>();
-        cardMap.put(cardAttrName[0],attrValBo.getRecharge().toString());
-        cardMap.put(cardAttrName[1],attrValBo.getAmount().toString());
-        return cardMap;
+
+    public static <T> Map<String,String> getMarketAttrCard(T clazz){
+        Field[] fields = clazz.getClass().getDeclaredFields();
+        Map<String, String> returnMap = new LinkedHashMap<>();
+        for (Field field : fields) {
+            try {
+                returnMap.put(field.getName(), field.get(clazz).toString());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return returnMap;
     }
-    public static String[] integralAttrName = new String[]{"integer","amount"};
-    public static Map<String,String> getIntegralAttrVal(MarketIntegralAttValBo.Integeral integeral){
-        Map<String, String> cardMap = new HashMap<>();
-        cardMap.put(integralAttrName[0],integeral.getInteger().toString());
-        cardMap.put(integralAttrName[1],integeral.getAmount().toString());
-        return cardMap;
-    }
-    public static String[] returnIntegralAttrName = new String[]{"useAmount","returnInteger"};
-    public static Map<String,String> getReturnIntegralAttrNameAttrVal(MarketIntegralAttValBo.ReturnIntegeral attValBo){
-        Map<String, String> cardMap = new HashMap<>();
-        cardMap.put(returnIntegralAttrName[0],attValBo.getUseAmount().toString());
-        cardMap.put(returnIntegralAttrName[1],attValBo.getReturnInteger().toString());
-        return cardMap;
-    }
+
 
 }

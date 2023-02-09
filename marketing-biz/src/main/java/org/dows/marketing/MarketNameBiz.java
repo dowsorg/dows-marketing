@@ -64,26 +64,28 @@ public class MarketNameBiz implements MarketNameApiService {
             nameEntity.setMarketNameId(idStr);
             nameEntity.setStoreId(storeId);
             nameEntity.setCategoryName(categoryEntity.getCategoryName());
-            nameEntity.setMarketName(nameForm.getCardAttValBo().getName());
             nameEntity.setDt(date);
-            nameService.save(nameEntity);
-            Map<String, String> cardAttrValMap = MarketNameEnums.getCardAttrVal(nameForm.getCardAttValBo());
-            String[] cardAttrName = MarketNameEnums.cardAttrName;
-            for (String nameAtt : cardAttrName) {
+            List<String> format = Lists.newArrayList();
+            Map<String, String> marketAttrCard = MarketNameEnums.getMarketAttrCard(nameForm.getCardAttValBo());
+            for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
                 MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
                 attrNameEntity.setMarketNameId(idStr);
-                attrNameEntity.setAttrName(nameAtt);
-                attrNameEntity.setFiledName(nameAtt);
+                attrNameEntity.setAttrName(entry.getKey());
+                attrNameEntity.setFiledName(entry.getKey());
                 attrNameEntity.setDt(date);
                 attrNameService.save(attrNameEntity);
                 MarketAttrValEntity valEntity = new MarketAttrValEntity();
-                valEntity.setAttrVal(cardAttrValMap.get(nameAtt));
+                valEntity.setAttrVal(entry.getValue());
+                format.add(entry.getValue());
                 valEntity.setAttrNameId(attrNameEntity.getId());
                 valEntity.setDt(date);
                 attrValService.save(valEntity);
             }
+            nameEntity.setMarketName(String.format("充值%s到账%s",format));
+            nameService.save(nameEntity);
         }
     }
+
 
     @Override
     public List<MarketCardAttrValVo> getMarketCardName(MarketQueryNameForm nameForm) {
@@ -96,10 +98,11 @@ public class MarketNameBiz implements MarketNameApiService {
         if(!CollUtil.isEmpty(nameEntityList)){
             List<String> marketNameIds = nameEntityList.stream().map(MarketNameEntity::getMarketNameId).collect(Collectors.toList());
             List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().eq(MarketAttrNameEntity::getMarketNameId, marketNameIds).list();
+            Map<String, List<MarketAttrNameEntity>> attrNameMap = CollStreamUtil.groupBy(attrNameEntityList, MarketAttrNameEntity::getMarketNameId, Collectors.toList());
+
             List<Long> attrNameIds = attrNameEntityList.stream().map(MarketAttrNameEntity::getId).collect(Collectors.toList());
             List<MarketAttrValEntity> attrValList = attrValService.lambdaQuery().in(MarketAttrValEntity::getAttrNameId, attrNameIds).list();
             Map<Long, String> attrValMap = CollStreamUtil.toMap(attrValList, MarketAttrValEntity::getAttrNameId, MarketAttrValEntity::getAttrVal);
-            Map<String, List<MarketAttrNameEntity>> attrNameMap = CollStreamUtil.groupBy(attrNameEntityList, MarketAttrNameEntity::getMarketNameId, Collectors.toList());
             for (MarketNameEntity nameEntity : nameEntityList) {
                 MarketCardAttrValVo cardAttrValVo = new MarketCardAttrValVo();
                 cardAttrValVo.setMarketNameId(nameEntity.getMarketNameId());
@@ -146,34 +149,38 @@ public class MarketNameBiz implements MarketNameApiService {
             nameEntity.setMarketNameId(idStr);
             nameEntity.setStoreId(storeId);
             nameEntity.setCategoryName(categoryEntity.getCategoryName());
-            nameEntity.setMarketName(integralNameForm.getIntegralAttValBo().getName());
             nameEntity.setType(integralNameForm.getIntegralAttValBo().getType());
             nameEntity.setDt(date);
-            nameService.save(nameEntity);
             MarketIntegralAttValBo attValBo = integralNameForm.getIntegralAttValBo();
-            String[] integralAttrName = new String[]{};
-            Map<String, String> integralAttrValMap = Maps.newHashMap();
+            Map<String, String> marketAttrCard = Maps.newHashMap();
             if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
-                integralAttrName = MarketNameEnums.integralAttrName;
-                integralAttrValMap = MarketNameEnums.getIntegralAttrVal(attValBo.getIntegeral());
+                marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getIntegeral());
             }
             if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
-                integralAttrName = MarketNameEnums.returnIntegralAttrName;
-                integralAttrValMap = MarketNameEnums.getReturnIntegralAttrNameAttrVal(attValBo.getReturnIntegeral());
+                marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getReturnIntegeral());
             }
-            for (String attrName : integralAttrName) {
+            List<String> format = Lists.newArrayList();
+            for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
                 MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
                 attrNameEntity.setMarketNameId(idStr);
-                attrNameEntity.setAttrName(attrName);
-                attrNameEntity.setFiledName(attrName);
+                attrNameEntity.setAttrName(entry.getKey());
+                attrNameEntity.setFiledName(entry.getKey());
                 attrNameEntity.setDt(date);
                 attrNameService.save(attrNameEntity);
                 MarketAttrValEntity valEntity = new MarketAttrValEntity();
-                valEntity.setAttrVal(integralAttrValMap.get(attrName));
+                valEntity.setAttrVal(entry.getValue());
+                format.add(entry.getValue());
                 valEntity.setAttrNameId(attrNameEntity.getId());
                 valEntity.setDt(date);
                 attrValService.save(valEntity);
             }
+            if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
+                nameEntity.setMarketName(String.format("%s积分=¥%s",format));
+            }
+            if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
+                nameEntity.setMarketName(String.format("消费每达%s元返%s积分",format));
+            }
+            nameService.save(nameEntity);
         }
     }
 
