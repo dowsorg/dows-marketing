@@ -36,10 +36,10 @@ public class SwaggerConfig {
                 .enable(true)
                 .select()
                 //.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .apis(RequestHandlerSelectors.basePackage("org.dows.store.rest"))
+                .apis(RequestHandlerSelectors.basePackage("org.dows.marketing.rest"))
                 .paths(PathSelectors.any())
                 .build()
-                .groupName("店铺管理");
+                .groupName("营销");
         //.pathMapping("/sms");
     }
 
@@ -49,7 +49,7 @@ public class SwaggerConfig {
                 .title("dows saas store")
                 .contact(contact)
                 .version("3.0")
-                .description("店铺服务")
+                .description("营销")
                 .version("1.0.0")
                 .build();
     }
