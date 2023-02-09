@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("tenant/marketName")
+@RequestMapping("tenant/marketing")
 public class TenantMarketNameRest implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
 
 
