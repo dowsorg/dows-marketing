@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class MarketStoreAuthFrom implements Serializable {
+public class MarketStoreAuthForm implements Serializable {
     private static final long serialVersionUID = -2986854523402718765L;
 
     @ApiModelProperty(value = "门店标识-ID")

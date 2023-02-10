@@ -1,5 +1,6 @@
 package org.dows.marketing.rest.tenant;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,7 @@ import org.dows.marketing.bo.MarketIntegralAttValBo;
 import org.dows.marketing.entity.MarketNameEntity;
 import org.dows.marketing.form.*;
 import org.dows.marketing.service.MarketNameService;
-import org.dows.marketing.vo.MarketCardAttrValVo;
-import org.dows.marketing.vo.MarketIntegralAttrValVo;
+import org.dows.marketing.vo.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -90,6 +90,44 @@ public class TenantMarketNameRest {
     @ApiOperation("获取门店充值套餐(积分)")
     public Response<List<MarketIntegralAttrValVo>> getMarketNameIntegral(@Valid @RequestBody MarketQueryNameForm nameForm){
         return Response.ok(nameApiService.getIntegralName(nameForm));
+    }
+
+
+    /**
+     * 储蓄卡列表(pc)
+     * @param queryForm
+     * @return
+     */
+    @PostMapping("/getMarketCardPageList")
+    @ApiOperation("储蓄卡列表(pc)")
+    public Response<Page<MarketCardListVo>> getMarketCardPageList(@RequestBody MarketCardListQueryForm queryForm){
+        Page<MarketCardListVo> page = new Page<>();
+        return Response.ok(page);
+    }
+
+    /**
+     * 储蓄卡充值列表(pc)
+     * @param queryForm
+     * @return
+     */
+    @PostMapping("/getMarketCardRechargePageList")
+    @ApiOperation("储蓄卡充值列表(pc)")
+    public Response<Page<MarketCardRechargeListVo>> getMarketCardRechargePageList(@RequestBody MarketCardListQueryForm queryForm){
+        Page<MarketCardRechargeListVo> page = new Page<>();
+        return Response.ok(page);
+    }
+
+
+    /**
+     * 储蓄卡使用列表(pc)
+     * @param queryForm
+     * @return
+     */
+    @PostMapping("/getMarketCardUsePageList")
+    @ApiOperation("储蓄卡充值列表(pc)")
+    public Response<Page<MarketCardUseListVo>> getMarketCardUsePageList(@RequestBody MarketCardListQueryForm queryForm){
+        Page<MarketCardUseListVo> page = new Page<>();
+        return Response.ok(page);
     }
 
 

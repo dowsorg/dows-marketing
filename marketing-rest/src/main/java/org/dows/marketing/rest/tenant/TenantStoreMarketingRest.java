@@ -5,11 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
-import org.dows.framework.crud.mybatis.MybatisCrudRest;
-import org.dows.marketing.entity.MarketNameEntity;
-import org.dows.marketing.form.MarketNameForm;
-import org.dows.marketing.form.MarketStoreAuthFrom;
-import org.dows.marketing.service.MarketNameService;
+import org.dows.marketing.form.MarketStoreAuthForm;
 import org.dows.marketing.form.MarketStoreFrom;
 import org.dows.marketing.vo.MarketStoreVo;
 import org.dows.store.service.StoreTableService;
@@ -39,7 +35,7 @@ public class TenantStoreMarketingRest {
 
     @PutMapping("/saveStoreMarketing")
     @ApiOperation("门店营销权限-保存")
-    public Response<List<MarketStoreVo>> addMarketCardName(@Valid @RequestBody MarketStoreAuthFrom authFrom){
+    public Response<List<MarketStoreVo>> addMarketCardName(@Valid @RequestBody MarketStoreAuthForm authFrom){
 
         List<MarketStoreVo>  marketStoreVoList = new ArrayList<>();
 
