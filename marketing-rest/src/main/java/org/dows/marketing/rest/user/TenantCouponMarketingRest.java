@@ -1,4 +1,4 @@
-package org.dows.marketing.rest.tenant;
+package org.dows.marketing.rest.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -6,16 +6,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
 import org.dows.marketing.service.MarketCategoryService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Api(tags = "营销-总部-优惠卷")
+@Api(tags = "营销-用户-优惠卷")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("tenant/marketing/coupon")
-public class TenantCouponMarketingRest   {
+@RequestMapping("user/marketing/coupon")
+public class TenantCouponMarketingRest {
 
     private final MarketCategoryService marketCategoryService;
 
