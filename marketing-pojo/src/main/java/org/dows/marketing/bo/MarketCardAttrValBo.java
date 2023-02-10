@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class MarketCardAttrValBo implements Serializable {
@@ -20,6 +21,14 @@ public class MarketCardAttrValBo implements Serializable {
     @NotNull(message = "实际到账不能为空!")
     @ApiModelProperty(value = "实际到账")
     private BigDecimal amount;
+
+    @NotNull(message = "开始日期不能为空!")
+    @ApiModelProperty(value = "开始日期")
+    private Date startTime;
+
+    @NotNull(message = "结束日期不能为空!")
+    @ApiModelProperty(value = "结束日期")
+    private Date endTime;
 
 
 }

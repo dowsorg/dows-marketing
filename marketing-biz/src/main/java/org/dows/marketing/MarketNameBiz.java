@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.marketing.api.MarketNameApiService;
+import org.dows.marketing.bo.MarketCardAttrValBo;
 import org.dows.marketing.bo.MarketIntegralAttValBo;
 import org.dows.marketing.entity.MarketAttrNameEntity;
 import org.dows.marketing.entity.MarketAttrValEntity;
@@ -115,7 +116,7 @@ public class MarketNameBiz implements MarketNameApiService {
                         String val = attrValMap.get(entry.getKey());
                         jsonObject.set(attrName,val);
                     }
-                    cardAttrValVo.setCardAttrVal(JSONUtil.toBean(jsonObject,MarketCardAttrValVo.CardAttrVal.class));
+                    cardAttrValVo.setCardAttrValBo(JSONUtil.toBean(jsonObject, MarketCardAttrValBo.class));
                 }
                 attrValVos.add(cardAttrValVo);
             }
