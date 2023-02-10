@@ -1,16 +1,13 @@
 package org.dows.marketing.entity;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.dows.framework.crud.mybatis.CrudEntity;
+
+import java.util.Date;
 
 /**
  * 营销参与者记录(MarketActorRecord)实体类
@@ -28,7 +25,7 @@ import org.dows.framework.crud.mybatis.CrudEntity;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "MarketActorRecord对象", description = "营销参与者记录")
 @TableName("market_actor_record")
-public class MarketActorRecordEntity implements CrudEntity {
+public class MarketActorRecordEntity  {
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")
@@ -47,11 +44,6 @@ public class MarketActorRecordEntity implements CrudEntity {
     @ApiModelProperty("时间戳")
     private Date dt;
 
-    @JsonIgnore
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty("逻辑删除")
-    private Boolean deleted;
 
 }
 

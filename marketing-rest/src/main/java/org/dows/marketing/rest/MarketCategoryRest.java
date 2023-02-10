@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("marketCategory")
-public class MarketCategoryRest implements MybatisCrudRest<MarketCategoryForm, MarketCategoryEntity, MarketCategoryService> {
+public class MarketCategoryRest  {
 
 
 }

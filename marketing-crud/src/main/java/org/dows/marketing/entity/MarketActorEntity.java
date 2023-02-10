@@ -27,7 +27,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "MarketActor对象", description = "营销参与者")
 @TableName("market_actor")
-public class MarketActorEntity implements CrudEntity {
+public class MarketActorEntity  {
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")
@@ -46,11 +46,6 @@ public class MarketActorEntity implements CrudEntity {
     @ApiModelProperty("时间戳")
     private Date dt;
 
-    @JsonIgnore
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty("逻辑删除")
-    private Boolean deleted;
 
 }
 

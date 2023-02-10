@@ -28,7 +28,7 @@ import org.dows.framework.crud.mybatis.CrudEntity;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "MarketAttrName对象", description = "营销-自定义动态属性")
 @TableName("market_attr_name")
-public class MarketAttrNameEntity implements CrudEntity {
+public class MarketAttrNameEntity  {
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")
@@ -65,11 +65,7 @@ public class MarketAttrNameEntity implements CrudEntity {
     @ApiModelProperty("时间戳")
     private Date dt;
 
-    @JsonIgnore
-    //@TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty("逻辑删除")
-    private Boolean deleted;
+
 
 }
 

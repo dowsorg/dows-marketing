@@ -1,5 +1,6 @@
 package org.dows.marketing.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.*;
@@ -28,7 +29,7 @@ import org.dows.framework.crud.mybatis.CrudEntity;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "MarketCategory对象", description = "营销类目")
 @TableName("market_category")
-public class MarketCategoryEntity implements CrudEntity {
+public class MarketCategoryEntity implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")
@@ -50,11 +51,7 @@ public class MarketCategoryEntity implements CrudEntity {
     @ApiModelProperty("时间戳")
     private Date dt;
 
-    @JsonIgnore
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    @ApiModelProperty("逻辑删除")
-    private Boolean deleted;
+
 
 }
 

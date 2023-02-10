@@ -31,7 +31,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("marketName")
-public class MarketNameRest implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
+public class MarketNameRest  {
 
 
     private final MarketNameApiService nameApiService;
