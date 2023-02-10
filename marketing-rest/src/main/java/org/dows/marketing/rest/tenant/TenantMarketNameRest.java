@@ -6,14 +6,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
-import org.dows.framework.crud.mybatis.MybatisCrudRest;
 import org.dows.marketing.api.MarketNameApiService;
-import org.dows.marketing.bo.MarketIntegralAttValBo;
-import org.dows.marketing.entity.MarketNameEntity;
 import org.dows.marketing.form.*;
-import org.dows.marketing.service.MarketNameService;
 import org.dows.marketing.vo.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -124,7 +123,7 @@ public class TenantMarketNameRest {
      * @return
      */
     @PostMapping("/getMarketCardUsePageList")
-    @ApiOperation("储蓄卡充值列表(pc)")
+    @ApiOperation("储蓄卡使用列表(pc)")
     public Response<Page<MarketCardUseListVo>> getMarketCardUsePageList(@RequestBody MarketCardListQueryForm queryForm){
         Page<MarketCardUseListVo> page = new Page<>();
         return Response.ok(page);
