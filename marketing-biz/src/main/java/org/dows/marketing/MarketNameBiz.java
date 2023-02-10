@@ -32,6 +32,7 @@ import org.dows.marketing.vo.MarketIntegralAttrValVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,12 +78,14 @@ public class MarketNameBiz implements MarketNameApiService {
                 attrNameService.save(attrNameEntity);
                 MarketAttrValEntity valEntity = new MarketAttrValEntity();
                 valEntity.setAttrVal(entry.getValue());
-                format.add(entry.getValue());
+                if(!Arrays.asList("startTime","endTime").contains(entry.getKey())){
+                    format.add(entry.getValue());
+                }
                 valEntity.setAttrNameId(attrNameEntity.getId());
                 valEntity.setDt(date);
                 attrValService.save(valEntity);
             }
-            nameEntity.setMarketName(String.format("充值%s到账%s",format));
+            nameEntity.setMarketName(String.format("充值%s到账%s",format.toArray()));
             nameService.save(nameEntity);
         }
     }
@@ -98,7 +101,7 @@ public class MarketNameBiz implements MarketNameApiService {
                 .eq(MarketNameEntity::getCategoryId, categoryEntity.getId()).list();
         if(!CollUtil.isEmpty(nameEntityList)){
             List<String> marketNameIds = nameEntityList.stream().map(MarketNameEntity::getMarketNameId).collect(Collectors.toList());
-            List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().eq(MarketAttrNameEntity::getMarketNameId, marketNameIds).list();
+            List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().in(MarketAttrNameEntity::getMarketNameId, marketNameIds).list();
             Map<String, List<MarketAttrNameEntity>> attrNameMap = CollStreamUtil.groupBy(attrNameEntityList, MarketAttrNameEntity::getMarketNameId, Collectors.toList());
 
             List<Long> attrNameIds = attrNameEntityList.stream().map(MarketAttrNameEntity::getId).collect(Collectors.toList());
@@ -176,10 +179,10 @@ public class MarketNameBiz implements MarketNameApiService {
                 attrValService.save(valEntity);
             }
             if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
-                nameEntity.setMarketName(String.format("%s积分=¥%s",format));
+                nameEntity.setMarketName(String.format("%s积分=¥%s",format.toArray()));
             }
             if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
-                nameEntity.setMarketName(String.format("消费每达%s元返%s积分",format));
+                nameEntity.setMarketName(String.format("消费每达%s元返%s积分",format.toArray()));
             }
             nameService.save(nameEntity);
         }
@@ -195,7 +198,7 @@ public class MarketNameBiz implements MarketNameApiService {
                 .eq(MarketNameEntity::getCategoryId, categoryEntity.getId()).list();
         if(!CollUtil.isEmpty(nameEntityList)){
             List<String> marketNameIds = nameEntityList.stream().map(MarketNameEntity::getMarketNameId).collect(Collectors.toList());
-            List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().eq(MarketAttrNameEntity::getMarketNameId, marketNameIds).list();
+            List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().in(MarketAttrNameEntity::getMarketNameId, marketNameIds).list();
             List<Long> attrNameIds = attrNameEntityList.stream().map(MarketAttrNameEntity::getId).collect(Collectors.toList());
             List<MarketAttrValEntity> attrValList = attrValService.lambdaQuery().in(MarketAttrValEntity::getAttrNameId, attrNameIds).list();
             Map<Long, String> attrValMap = CollStreamUtil.toMap(attrValList, MarketAttrValEntity::getAttrNameId, MarketAttrValEntity::getAttrVal);

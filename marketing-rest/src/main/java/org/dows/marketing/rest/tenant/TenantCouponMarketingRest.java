@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("tenant/marketing/coupon")
-public class TenantCouponMarketingRest  implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
+public class TenantCouponMarketingRest   {
     private final MarketNameApiService nameApiService;
 
 

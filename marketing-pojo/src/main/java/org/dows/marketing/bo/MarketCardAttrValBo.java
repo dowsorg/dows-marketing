@@ -1,18 +1,16 @@
 package org.dows.marketing.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class MarketCardAttrValBo implements Serializable {
-
-
-    private static final long serialVersionUID = -4447897423102538413L;
+public class MarketCardAttrValBo  {
 
     @NotNull(message = "充值不能为空!")
     @ApiModelProperty(value = "充值")

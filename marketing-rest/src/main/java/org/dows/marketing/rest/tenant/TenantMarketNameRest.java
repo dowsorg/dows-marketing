@@ -29,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("tenant/marketing")
-public class TenantMarketNameRest implements MybatisCrudRest<MarketNameForm, MarketNameEntity, MarketNameService> {
+public class TenantMarketNameRest {
 
 
     private final MarketNameApiService nameApiService;
@@ -59,13 +59,13 @@ public class TenantMarketNameRest implements MybatisCrudRest<MarketNameForm, Mar
 
     /**
      * 删除门店充值套餐(储蓄卡)
-     * @param marketNameId
+     * @param idForm
      * @return
      */
     @PostMapping("/removeMarketName")
     @ApiOperation("删除门店充值套餐")
-    public Response<Boolean> removeMarketCardName(@RequestParam("marketNameId") String marketNameId){
-        return Response.ok(nameApiService.removeMarketCardName(marketNameId));
+    public Response<Boolean> removeMarketCardName(@Valid @RequestBody MarketIdForm idForm){
+        return Response.ok(nameApiService.removeMarketCardName(idForm.getMarketNameId()));
     }
 
 

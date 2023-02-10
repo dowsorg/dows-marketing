@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 @Data
 public class MarketIntegralAttValBo implements Serializable {
-    private static final long serialVersionUID = 3587026092709948813L;
 
     @ApiModelProperty(value = "1:积分现金比例 2:消费返积分比例")
     private Integer type;
@@ -24,7 +23,6 @@ public class MarketIntegralAttValBo implements Serializable {
     @Data
     public static class ReturnIntegeral implements Serializable{
 
-        private static final long serialVersionUID = 6833855923040066470L;
 
         @ApiModelProperty(value = "每消费")
         private BigDecimal useAmount;
@@ -37,7 +35,6 @@ public class MarketIntegralAttValBo implements Serializable {
 
     @Data
     public static class Integeral implements Serializable{
-        private static final long serialVersionUID = -5717372494415022481L;
         @ApiModelProperty(value = "积分")
         private Integer integer;
 

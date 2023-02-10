@@ -28,7 +28,7 @@ import org.dows.framework.crud.mybatis.CrudEntity;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "MarketName对象", description = "营销-名称")
 @TableName("market_name")
-public class MarketNameEntity  {
+public class MarketNameEntity {
 
     @TableId(value = "id", type = IdType.AUTO)
     @ApiModelProperty("主键id")

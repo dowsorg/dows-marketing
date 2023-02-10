@@ -9,8 +9,10 @@ server:
 #  servlet:
 #    context-path: /${spring.application.name}
 
-
 spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   application:
     name: dows-store
   profiles:

@@ -1,9 +1,13 @@
 package org.dows.marketing.enums;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ReflectUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,14 +40,15 @@ public enum MarketNameEnums {
 
 
     public static <T> Map<String,String> getMarketAttrCard(T clazz){
-        Field[] fields = clazz.getClass().getDeclaredFields();
+        Field[] fields = ReflectUtil.getFields(clazz.getClass());
         Map<String, String> returnMap = new LinkedHashMap<>();
         for (Field field : fields) {
-            try {
-                returnMap.put(field.getName(), field.get(clazz).toString());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            field.setAccessible(true);
+            Object obj = ReflectUtil.getFieldValue(clazz,field);
+            if(obj instanceof Date){
+                obj = DateUtil.formatDateTime((Date)obj);
             }
+            returnMap.put(field.getName(), obj.toString());
         }
         return returnMap;
     }
