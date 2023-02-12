@@ -10,6 +10,10 @@ import java.io.Serializable;
 public class MarketCardNameForm extends MarketAddNameForm implements Serializable {
 
     private static final long serialVersionUID = 6864667280817300648L;
+
+    @ApiModelProperty(value = "营销id")
+    private String marketNameId;
+
     @ApiModelProperty(value = "储蓄卡")
     private MarketCardAttrValBo cardAttValBo;
 }

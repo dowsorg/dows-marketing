@@ -34,16 +34,18 @@ public class TenantMarketNameRest {
     private final MarketNameApiService nameApiService;
 
     /**
-     * 门店充值套餐(储蓄卡)
+     * 新增或编辑门店充值套餐(储蓄卡)
      * @param cardNameForm
      * @return
      */
     @PostMapping("/addMarketCardName")
-    @ApiOperation("门店充值套餐(储蓄卡)")
+    @ApiOperation("新增或编辑门店充值套餐(储蓄卡)")
     public Response<Boolean> addMarketCardName(@Valid @RequestBody MarketCardNameForm cardNameForm){
         nameApiService.addMarketCardName(cardNameForm);
         return Response.ok();
     }
+
+
 
     /**
      * 获取门店充值套餐(储蓄卡)
@@ -69,12 +71,12 @@ public class TenantMarketNameRest {
 
 
     /**
-     * 门店充值套餐(积分)
+     * 新增或编辑门店充值套餐(积分)
      * @param integralNameForm
      * @return
      */
     @PostMapping("/addMarketIntegralName")
-    @ApiOperation("门店充值套餐(积分)")
+    @ApiOperation("新增或编辑门店充值套餐(积分)")
     public Response<Boolean> addMarketIntegralName(@Valid @RequestBody MarketIntegralNameForm integralNameForm){
         nameApiService.addMarketIntegral(integralNameForm);
         return Response.ok();
@@ -128,6 +130,7 @@ public class TenantMarketNameRest {
         Page<MarketCardUseListVo> page = new Page<>();
         return Response.ok(page);
     }
+
 
 
 

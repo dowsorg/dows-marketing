@@ -10,6 +10,9 @@ import java.io.Serializable;
 public class MarketIntegralNameForm extends MarketAddNameForm implements Serializable {
     private static final long serialVersionUID = -2692125100316987001L;
 
+    @ApiModelProperty(value = "营销id")
+    private String marketNameId;
+
     @ApiModelProperty(value = "积分")
     private MarketIntegralAttValBo integralAttValBo;
 }

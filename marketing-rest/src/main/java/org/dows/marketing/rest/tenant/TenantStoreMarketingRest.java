@@ -8,7 +8,6 @@ import org.dows.framework.api.Response;
 import org.dows.marketing.form.MarketStoreAuthForm;
 import org.dows.marketing.form.MarketStoreFrom;
 import org.dows.marketing.vo.MarketStoreVo;
-import org.dows.store.service.StoreTableService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tenant/marketing/store")
 public class TenantStoreMarketingRest {
-    private  final StoreTableService storeTableService;
+    //private  final StoreTableService storeTableService;
 
 
     @GetMapping("/getStoreMarketingList")
