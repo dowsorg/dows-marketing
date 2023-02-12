@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -52,42 +53,54 @@ public class MarketNameBiz implements MarketNameApiService {
     private final MarketCategoryService categoryService;
 
 
-    @SneakyThrows
     @Override
     @Transactional
     public void addMarketCardName(MarketCardNameForm nameForm) {
-        MarketCategoryEntity categoryEntity = categoryService.lambdaQuery()
-                .eq(MarketCategoryEntity::getCategoryCode, nameForm.getCodeEn().getCode()).one();
         DateTime date = DateUtil.date();
-        for (Long storeId : nameForm.getStoreIds()) {
-            MarketNameEntity nameEntity = new MarketNameEntity();
-            nameEntity.setCategoryId(categoryEntity.getId());
-            String idStr = IdWorker.getIdStr();
-            nameEntity.setMarketNameId(idStr);
-            nameEntity.setStoreId(storeId);
-            nameEntity.setCategoryName(categoryEntity.getCategoryName());
-            nameEntity.setDt(date);
-            List<String> format = Lists.newArrayList();
-            Map<String, String> marketAttrCard = MarketNameEnums.getMarketAttrCard(nameForm.getCardAttValBo());
-            for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
-                MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
-                attrNameEntity.setMarketNameId(idStr);
-                attrNameEntity.setAttrName(entry.getKey());
-                attrNameEntity.setFiledName(entry.getKey());
-                attrNameEntity.setDt(date);
-                attrNameService.save(attrNameEntity);
-                MarketAttrValEntity valEntity = new MarketAttrValEntity();
-                valEntity.setAttrVal(entry.getValue());
-                if(!Arrays.asList("startTime","endTime").contains(entry.getKey())){
-                    format.add(entry.getValue());
-                }
-                valEntity.setAttrNameId(attrNameEntity.getId());
-                valEntity.setDt(date);
-                attrValService.save(valEntity);
+        if(StrUtil.isBlank(nameForm.getMarketNameId())){//新增
+            MarketCategoryEntity categoryEntity = categoryService.lambdaQuery()
+                    .eq(MarketCategoryEntity::getCategoryCode, nameForm.getCodeEn().getCode()).one();
+            for (Long storeId : nameForm.getStoreIds()) {
+                MarketNameEntity nameEntity = new MarketNameEntity();
+                nameEntity.setCategoryId(categoryEntity.getId());
+                String idStr = IdWorker.getIdStr();
+                nameEntity.setMarketNameId(idStr);
+                nameEntity.setStoreId(storeId);
+                nameEntity.setCategoryName(categoryEntity.getCategoryName());
+                nameEntity.setDt(date);
+                List<String> format = processAttrCard(nameForm, date, idStr);
+                nameEntity.setMarketName(String.format("充值%s到账%s",format.toArray()));
+                nameService.save(nameEntity);
             }
-            nameEntity.setMarketName(String.format("充值%s到账%s",format.toArray()));
-            nameService.save(nameEntity);
+        }else {
+            deleteAttrVal(nameForm.getMarketNameId());
+            List<String> format = processAttrCard(nameForm, date, nameForm.getMarketNameId());
+            nameService.lambdaUpdate()
+                    .set(MarketNameEntity::getMarketName,String.format("充值%s到账%s",format.toArray()))
+                    .eq(MarketNameEntity::getMarketNameId,nameForm.getMarketNameId()).update();
         }
+    }
+
+    private List<String> processAttrCard(MarketCardNameForm nameForm, DateTime date, String marketNameId) {
+        List<String> format = Lists.newArrayList();
+        Map<String, String> marketAttrCard = MarketNameEnums.getMarketAttrCard(nameForm.getCardAttValBo());
+        for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
+            MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
+            attrNameEntity.setMarketNameId(marketNameId);
+            attrNameEntity.setAttrName(entry.getKey());
+            attrNameEntity.setFiledName(entry.getKey());
+            attrNameEntity.setDt(date);
+            attrNameService.save(attrNameEntity);
+            MarketAttrValEntity valEntity = new MarketAttrValEntity();
+            valEntity.setAttrVal(entry.getValue());
+            if (!Arrays.asList("startTime", "endTime").contains(entry.getKey())) {
+                format.add(entry.getValue());
+            }
+            valEntity.setAttrNameId(attrNameEntity.getId());
+            valEntity.setDt(date);
+            attrValService.save(valEntity);
+        }
+        return format;
     }
 
 
@@ -131,61 +144,84 @@ public class MarketNameBiz implements MarketNameApiService {
     @Transactional
     public boolean removeMarketCardName(String marketNameId) {
         MarketNameEntity nameEntity = nameService.lambdaQuery().eq(MarketNameEntity::getMarketNameId, marketNameId).one();
-        nameService.removeById(nameEntity.getId());
+        deleteAttrVal(marketNameId);
+        return nameService.removeById(nameEntity.getId());
+
+    }
+
+    /**
+     * 删除属性和对于的val
+     * @param marketNameId
+     */
+    private void deleteAttrVal(String marketNameId){
         List<MarketAttrNameEntity> attrNameEntityList = attrNameService.lambdaQuery().eq(MarketAttrNameEntity::getMarketNameId, marketNameId).list();
         Set<Long> attrNameIds = attrNameEntityList.stream().map(MarketAttrNameEntity::getId).collect(Collectors.toSet());
         attrNameService.removeByIds(attrNameIds);
         List<MarketAttrValEntity> attrValList = attrValService.lambdaQuery().in(MarketAttrValEntity::getAttrNameId, attrNameIds).list();
         Set<Long> attrValIds = attrValList.stream().map(MarketAttrValEntity::getId).collect(Collectors.toSet());
-        return attrValService.removeByIds(attrValIds);
+        attrValService.removeByIds(attrValIds);
     }
 
     @SneakyThrows
     @Override
     public void addMarketIntegral(MarketIntegralNameForm integralNameForm) {
-        MarketCategoryEntity categoryEntity = categoryService.lambdaQuery()
-                .eq(MarketCategoryEntity::getCategoryCode, integralNameForm.getCodeEn().getCode()).one();
         DateTime date = DateUtil.date();
-        for (Long storeId : integralNameForm.getStoreIds()) {
-            MarketNameEntity nameEntity = new MarketNameEntity();
-            nameEntity.setCategoryId(categoryEntity.getId());
-            String idStr = IdWorker.getIdStr();
-            nameEntity.setMarketNameId(idStr);
-            nameEntity.setStoreId(storeId);
-            nameEntity.setCategoryName(categoryEntity.getCategoryName());
-            nameEntity.setType(integralNameForm.getIntegralAttValBo().getType());
-            nameEntity.setDt(date);
-            MarketIntegralAttValBo attValBo = integralNameForm.getIntegralAttValBo();
-            Map<String, String> marketAttrCard = Maps.newHashMap();
-            if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
-                marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getIntegeral());
+        if(StrUtil.isBlank(integralNameForm.getMarketNameId())){//新增
+            MarketCategoryEntity categoryEntity = categoryService.lambdaQuery()
+                    .eq(MarketCategoryEntity::getCategoryCode, integralNameForm.getCodeEn().getCode()).one();
+            for (Long storeId : integralNameForm.getStoreIds()) {
+                MarketNameEntity nameEntity = new MarketNameEntity();
+                nameEntity.setCategoryId(categoryEntity.getId());
+                String idStr = IdWorker.getIdStr();
+                nameEntity.setMarketNameId(idStr);
+                nameEntity.setStoreId(storeId);
+                nameEntity.setCategoryName(categoryEntity.getCategoryName());
+                nameEntity.setType(integralNameForm.getIntegralAttValBo().getType());
+                nameEntity.setDt(date);
+                List<String> format = processAttrIntegral(integralNameForm, date, idStr);
+                if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
+                    nameEntity.setMarketName(String.format("%s积分=¥%s",format.toArray()));
+                }
+                if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
+                    nameEntity.setMarketName(String.format("消费每达%s元返%s积分",format.toArray()));
+                }
+                nameService.save(nameEntity);
             }
-            if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
-                marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getReturnIntegeral());
-            }
-            List<String> format = Lists.newArrayList();
-            for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
-                MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
-                attrNameEntity.setMarketNameId(idStr);
-                attrNameEntity.setAttrName(entry.getKey());
-                attrNameEntity.setFiledName(entry.getKey());
-                attrNameEntity.setDt(date);
-                attrNameService.save(attrNameEntity);
-                MarketAttrValEntity valEntity = new MarketAttrValEntity();
-                valEntity.setAttrVal(entry.getValue());
-                format.add(entry.getValue());
-                valEntity.setAttrNameId(attrNameEntity.getId());
-                valEntity.setDt(date);
-                attrValService.save(valEntity);
-            }
-            if(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())){
-                nameEntity.setMarketName(String.format("%s积分=¥%s",format.toArray()));
-            }
-            if(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())){
-                nameEntity.setMarketName(String.format("消费每达%s元返%s积分",format.toArray()));
-            }
-            nameService.save(nameEntity);
+        }else{
+            deleteAttrVal(integralNameForm.getMarketNameId());
+            List<String> format = processAttrIntegral(integralNameForm, date, integralNameForm.getMarketNameId());
+            nameService.lambdaUpdate()
+                    .set(Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType()),MarketNameEntity::getMarketName,String.format("%s积分=¥%s",format.toArray()))
+                    .set(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType()),MarketNameEntity::getMarketName,String.format("消费每达%s元返%s积分",format.toArray()))
+                    .eq(MarketNameEntity::getMarketNameId,integralNameForm.getMarketNameId()).update();
         }
+    }
+
+    private List<String> processAttrIntegral(MarketIntegralNameForm integralNameForm, DateTime date, String marketNameId) {
+        MarketIntegralAttValBo attValBo = integralNameForm.getIntegralAttValBo();
+        Map<String, String> marketAttrCard = Maps.newHashMap();
+        if (Integer.valueOf(1).equals(integralNameForm.getIntegralAttValBo().getType())) {
+            marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getIntegeral());
+        }
+        if (Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType())) {
+            marketAttrCard = MarketNameEnums.getMarketAttrCard(attValBo.getReturnIntegeral());
+        }
+        List<String> format = Lists.newArrayList();
+        for (Map.Entry<String, String> entry : marketAttrCard.entrySet()) {
+            MarketAttrNameEntity attrNameEntity = new MarketAttrNameEntity();
+            attrNameEntity.setMarketNameId(marketNameId);
+            attrNameEntity.setAttrName(entry.getKey());
+            attrNameEntity.setFiledName(entry.getKey());
+            attrNameEntity.setDt(date);
+            attrNameService.save(attrNameEntity);
+            MarketAttrValEntity valEntity = new MarketAttrValEntity();
+            valEntity.setAttrVal(entry.getValue());
+            format.add(entry.getValue());
+            valEntity.setAttrNameId(attrNameEntity.getId());
+            valEntity.setDt(date);
+            attrValService.save(valEntity);
+        }
+        return format;
     }
 
     @Override
