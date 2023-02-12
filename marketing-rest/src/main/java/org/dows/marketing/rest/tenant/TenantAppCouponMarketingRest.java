@@ -1,7 +1,6 @@
 package org.dows.marketing.rest.tenant;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
-@Api(tags = "营销-总部-优惠卷")
+@Api(tags = "营销-门店APP-优惠卷")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("tenant/marketing/coupon")
-public class TenantCouponMarketingRest   {
-
-    private final MarketCategoryService marketCategoryService;
-
+@RequestMapping("tenant/marketing/coupon/app")
+public class TenantAppCouponMarketingRest {
     @Autowired
     MarketCouponBiz marketCouponBiz;
 

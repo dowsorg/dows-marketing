@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("user/marketing/coupon")
-public class TenantCouponMarketingRest {
+public class UserCouponMarketingRest {
 
     private final MarketCategoryService marketCategoryService;
 

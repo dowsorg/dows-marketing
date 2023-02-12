@@ -47,6 +47,10 @@ public class MarketAttrValEntity {
     @ApiModelProperty("时间戳")
     private Date dt;
 
+    @ApiModelProperty("营销ID")
+    private Long marketNameId;
+
+
 
 }
 
