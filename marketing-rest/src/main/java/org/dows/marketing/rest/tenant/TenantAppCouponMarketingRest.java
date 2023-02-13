@@ -7,16 +7,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
 import org.dows.marketing.MarketCouponBiz;
-import org.dows.marketing.form.MarketCouponForm;
-import org.dows.marketing.form.MarketCouponQueryForm;
-import org.dows.marketing.form.MarketListCouponVo;
+import org.dows.marketing.api.MarketSettingApi;
+import org.dows.marketing.form.*;
 import org.dows.marketing.service.MarketCategoryService;
+import org.dows.marketing.vo.MarketQuerySettingVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
-@Api(tags = "营销-门店APP-优惠卷")
+@Api(tags = "【门店APP】营销-优惠卷")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +25,15 @@ import javax.validation.Valid;
 public class TenantAppCouponMarketingRest {
     @Autowired
     MarketCouponBiz marketCouponBiz;
+    @Autowired
+    MarketSettingApi marketSettingApi;
+    @PostMapping("/queryMarketStatus")
+    @ApiOperation("营销功能-开关状态查询")
+    public Response<List<MarketSettingStroreFrom>> queryMarketStatus( Long storeId){
+
+        return Response.ok(marketSettingApi.queryMarketStatus(storeId));
+
+    }
 
     @PutMapping("/addCoupon")
     @ApiOperation("优惠卷-增加")

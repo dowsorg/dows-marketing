@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = "营销-总部-优惠卷")
+@Api(tags = "【总部】营销-优惠卷")
 @Slf4j
 @RequiredArgsConstructor
 @RestController

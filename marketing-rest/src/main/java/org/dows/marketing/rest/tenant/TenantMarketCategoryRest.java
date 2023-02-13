@@ -25,7 +25,7 @@ import java.util.List;
 * @author 
 * @date 
 */
-@Api(tags = "营销-优惠卷管理")
+@Api(tags = "【通用】营销-优惠卷管理")
 @Slf4j
 @RequiredArgsConstructor
 @RestController

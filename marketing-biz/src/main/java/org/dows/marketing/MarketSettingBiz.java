@@ -1,17 +1,24 @@
 package org.dows.marketing;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.marketing.api.MarketSettingApi;
 import org.dows.marketing.entity.MarketAttrNameEntity;
 import org.dows.marketing.enums.MarketSttingEnums;
 import org.dows.marketing.enums.MarketNameEnums;
+import org.dows.marketing.form.MarketQuerySettingFrom;
+import org.dows.marketing.form.MarketSettingFrom;
+import org.dows.marketing.form.MarketSettingStroreFrom;
 import org.dows.marketing.form.MarketStoreFrom;
 import org.dows.marketing.service.MarketAttrNameService;
+import org.dows.marketing.vo.MarketQuerySettingVo;
 import org.dows.marketing.vo.MarketStoreVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -75,5 +82,74 @@ public class MarketSettingBiz implements MarketSettingApi {
                 .map(x -> x.setFiledTyp(MarketSttingEnums.MARKET_SETTING_TENANT.getCode()))
                 .collect(Collectors.toList());
         return  attrNameService.saveOrUpdateBatch(collect);
+    }
+
+    @Override
+    @Transactional
+    public boolean storeMarketSetting(MarketSettingFrom storeSettings) {
+        if (storeSettings.getAttrVal().equals(MarketSttingEnums.MARKET_SETTING_OFF.getCode())){
+            QueryWrapper<MarketAttrNameEntity> wrapper = new QueryWrapper();
+            wrapper.lambda()
+                    .eq(MarketAttrNameEntity::getTenantId, storeSettings.getTenantId())
+                    .eq(MarketAttrNameEntity::getAttrName,storeSettings.getAttrName())
+                    .in(MarketAttrNameEntity::getFiledTyp,MarketSttingEnums.MARKET_SETTING_OPEN_STORE.getCode(),
+                            MarketSttingEnums.MARKET_SETTING_OPEN_TENANT.getCode());
+            attrNameService.remove(wrapper);
+        }
+        MarketAttrNameEntity nameEntity = new MarketAttrNameEntity();
+        BeanUtil.copyProperties(storeSettings,nameEntity);
+        nameEntity.setFiledTyp(MarketSttingEnums.MARKET_SETTING_OPEN_TENANT.getCode());
+        return attrNameService.saveOrUpdate(nameEntity);
+    }
+
+    @Override
+    public boolean storeMarketSetting(MarketSettingStroreFrom storeSettings) {
+        MarketAttrNameEntity nameEntity = new MarketAttrNameEntity();
+        BeanUtil.copyProperties(storeSettings,nameEntity);
+        nameEntity.setFiledTyp(MarketSttingEnums.MARKET_SETTING_OPEN_STORE.getCode());
+        return attrNameService.saveOrUpdate(nameEntity);
+    }
+
+    @Override
+    public MarketQuerySettingVo queryStoreMarketSetting(MarketQuerySettingFrom querySettingFrom) {
+
+        MarketQuerySettingVo querySettingVo = new MarketQuerySettingVo();
+        // todo 获取门店类别
+
+        List<MarketAttrNameEntity> nameEntityList = attrNameService.lambdaQuery()
+                .eq(MarketAttrNameEntity::getAttrName, querySettingFrom.getAttrName())
+                .eq(MarketAttrNameEntity::getTenantId, querySettingFrom.getTenantId())
+                .list();
+
+        if (nameEntityList != null){
+            List<MarketSettingStroreFrom> settingStroreFroms = nameEntityList.stream().filter(x ->
+                            x.getFiledTyp().equals(MarketSttingEnums.MARKET_SETTING_OPEN_TENANT.getCode()))
+                    .map(x -> new MarketSettingStroreFrom(x.getId(), x.getTenantId(), x.getNameId(), x.getAttrName(), x.getAttrVal()))
+                    .collect(Collectors.toList());
+
+            if (settingStroreFroms != null && !settingStroreFroms.isEmpty()){
+                querySettingVo.setSettingStore(settingStroreFroms.get(0));
+            }
+
+            List<MarketSettingStroreFrom> marketSettingStroreFroms = nameEntityList.stream()
+                    .filter(x -> x.getFiledTyp().equals(MarketSttingEnums.MARKET_SETTING_OPEN_STORE.getCode()))
+                    .map(x -> new MarketSettingStroreFrom(x.getId(), x.getTenantId(), x.getNameId(), x.getAttrName(), x.getAttrVal()))
+                    .collect(Collectors.toList());
+
+            querySettingVo.setAllStoreSetting(marketSettingStroreFroms);
+        }
+        return querySettingVo;
+    }
+
+    @Override
+    public List<MarketSettingStroreFrom> queryMarketStatus(Long storeId) {
+        List<MarketSettingStroreFrom> settingStroreFroms = attrNameService.lambdaQuery()
+                .eq(MarketAttrNameEntity::getFiledTyp, MarketSttingEnums.MARKET_SETTING_OPEN_STORE.getCode())
+                .eq(MarketAttrNameEntity::getNameId, storeId)
+                .list().stream()
+                .map(x -> new MarketSettingStroreFrom(x.getId(), x.getTenantId(), x.getNameId(), x.getAttrName(), x.getAttrVal()))
+                .collect(Collectors.toList());
+
+        return settingStroreFroms;
     }
 }
