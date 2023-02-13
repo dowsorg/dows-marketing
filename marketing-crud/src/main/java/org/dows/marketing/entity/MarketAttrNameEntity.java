@@ -43,7 +43,10 @@ public class MarketAttrNameEntity  {
     @ApiModelProperty("字段名")
     private String filedName;
 
-    @ApiModelProperty("字段类型：string，int，long，decimal，double")
+    @ApiModelProperty("属性值")
+    private String attrVal;
+
+    @ApiModelProperty("字段类型：string，int，long，decimal，double，setting")
     private String filedTyp;
 
     @ApiModelProperty("索引类型： 0->非索引, 1->主键索引，2->唯一索引 3->普通索引")
@@ -58,14 +61,23 @@ public class MarketAttrNameEntity  {
     @ApiModelProperty("数字类型参数的单位，非数字类型可以为空")
     private String unit;
 
-    @ApiModelProperty("营销ID")
+    @ApiModelProperty("营销ID，店铺id")
     private Long nameId;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty("时间戳")
     private Date dt;
 
+    @ApiModelProperty("租户id")
+    private String tenantId;
 
 
+    public MarketAttrNameEntity(String attrName, String attrVal, Long nameId, String tenantId, Long id) {
+        this.attrName = attrName;
+        this.attrVal = attrVal;
+        this.nameId = nameId;
+        this.tenantId = tenantId;
+        this.id = id;
+    }
 }
 

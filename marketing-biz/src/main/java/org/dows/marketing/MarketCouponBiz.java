@@ -19,19 +19,15 @@ import org.dows.marketing.entity.MarketCouponStoreEntity;
 import org.dows.marketing.form.MarketCouponForm;
 import org.dows.marketing.form.MarketCouponQueryForm;
 import org.dows.marketing.form.MarketListCouponVo;
-import org.dows.marketing.mapper.MarketCouponMapper;
 import org.dows.marketing.mapper.MarketCouponMapperJoin;
 import org.dows.marketing.service.MarketCouponService;
 import org.dows.marketing.service.MarketCouponStoreService;
 import org.dows.marketing.service.MarketNameService;
-import org.dows.store.entity.StoreInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Wrapper;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

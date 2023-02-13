@@ -5,9 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
+import org.dows.marketing.api.MarketSettingApi;
 import org.dows.marketing.form.MarketStoreAuthForm;
 import org.dows.marketing.form.MarketStoreFrom;
 import org.dows.marketing.vo.MarketStoreVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,25 +22,29 @@ import java.util.List;
 @RestController
 @RequestMapping("tenant/marketing/store")
 public class TenantStoreMarketingRest {
-    //private  final StoreTableService storeTableService;
+
+    @Autowired
+    MarketSettingApi marketSettingApi;
 
 
-    @GetMapping("/getStoreMarketingList")
-    @ApiOperation("门店营销权限-列表")
-    public Response<List<MarketStoreVo>> addMarketCardName(@Valid @RequestBody MarketStoreFrom marketStoreFrom){
-        List<MarketStoreVo>  marketStoreVoList = new ArrayList<>();
-
+    @PostMapping("/getMarketingSettingList")
+    @ApiOperation("【总部】营销权限-门店营销权限")
+    public Response<List<MarketStoreVo>> getMarketingSettingList(@Valid @RequestBody MarketStoreFrom marketStoreFrom){
+        List<MarketStoreVo>  marketStoreVoList = marketSettingApi.getMarketingSettingList(marketStoreFrom);
         return Response.ok(marketStoreVoList);
     }
 
 
-    @PutMapping("/saveStoreMarketing")
-    @ApiOperation("门店营销权限-保存")
-    public Response<List<MarketStoreVo>> addMarketCardName(@Valid @RequestBody MarketStoreAuthForm authFrom){
+    @PutMapping("/saveMarketSetting")
+    @ApiOperation("【总部】营销权限-门店营销权限-编辑、保存")
+    public Response<List<MarketStoreVo>> saveMarketSetting(@Valid @RequestBody List<MarketStoreVo> voList){
 
-        List<MarketStoreVo>  marketStoreVoList = new ArrayList<>();
+         if (marketSettingApi.saveMarketSetting(voList)){
+             return Response.ok();
+         }else {
+             return Response.fail();
+         }
 
-        return Response.ok(marketStoreVoList);
     }
 
 }

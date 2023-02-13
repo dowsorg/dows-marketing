@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public enum MarketConstant {
+public enum MarketConstantEnums {
 
 
     LQ_ZDLQ("自动领取",11),
@@ -28,13 +28,28 @@ public enum MarketConstant {
 
 
     public static String getMarketName(String code){
-        MarketConstant[] values = MarketConstant.values();
-        for (MarketConstant value : values) {
+        MarketConstantEnums[] values = MarketConstantEnums.values();
+        for (MarketConstantEnums value : values) {
             if(value.getCode().equals(code)){
                 return value.getName();
             }
         }
         return null;
+    }
+
+
+    public static <T> Map<String,String> getMarketAttrCard(T clazz){
+        Field[] fields = ReflectUtil.getFields(clazz.getClass());
+        Map<String, String> returnMap = new LinkedHashMap<>();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object obj = ReflectUtil.getFieldValue(clazz,field);
+            if(obj instanceof Date){
+                obj = DateUtil.formatDateTime((Date)obj);
+            }
+            returnMap.put(field.getName(), obj.toString());
+        }
+        return returnMap;
     }
 
 

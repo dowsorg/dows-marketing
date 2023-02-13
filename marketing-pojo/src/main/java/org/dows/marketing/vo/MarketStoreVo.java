@@ -9,14 +9,18 @@ import java.io.Serializable;
 public class MarketStoreVo implements Serializable {
     private static final long serialVersionUID = -2986854523402718765L;
 
+    @ApiModelProperty(value = "ID-编辑时传递，后端无返回则不传递")
+    private Long Id;
+    @ApiModelProperty(value = "租户-ID")
+    private String tenantId;
     @ApiModelProperty(value = "门店标识-ID")
-    private String storeId;
+    private Long nameId;
     @ApiModelProperty(value = "营销类型名称")
     private String categoryName;
     @ApiModelProperty(value = "营销分类ID-条目码")
-    private String categoryCode;
-    @ApiModelProperty(value = "是否有权限：0-无，1-有")
-    private String hasAuth;
+    private String attrName;
+    @ApiModelProperty(value = "是否有权限：off-无，on-有")
+    private String attrVal;
 
 
 }
