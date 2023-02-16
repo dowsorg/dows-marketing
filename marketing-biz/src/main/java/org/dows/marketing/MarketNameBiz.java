@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
@@ -195,6 +196,21 @@ public class MarketNameBiz implements MarketNameApiService {
                     .set(Integer.valueOf(2).equals(integralNameForm.getIntegralAttValBo().getType()),MarketNameEntity::getMarketName,String.format("消费每达%s元返%s积分",format.toArray()))
                     .eq(MarketNameEntity::getMarketNameId,integralNameForm.getMarketNameId()).update();
         }
+    }
+
+    @Override
+    public <T> T getMarketCardAttrVal(String marketNameId,Class<T> tClass) {
+        List<MarketAttrNameEntity> attrNameList = attrNameService.lambdaQuery().eq(MarketAttrNameEntity::getMarketNameId, marketNameId).list();
+        if(!CollUtil.isEmpty(attrNameList)){
+            JSONObject object = new JSONObject();
+            List<MarketAttrValEntity> attrValList = attrValService.lambdaQuery().in(MarketAttrValEntity::getAttrNameId, CollStreamUtil.toList(attrNameList, MarketAttrNameEntity::getId)).list();
+            Map<Long, String> attrValMap = CollStreamUtil.toMap(attrValList, MarketAttrValEntity::getAttrNameId, MarketAttrValEntity::getAttrVal);
+            for (MarketAttrNameEntity attrNameEntity : attrNameList) {
+                object.set(attrNameEntity.getAttrName(),attrValMap.get(attrNameEntity.getId()));
+            }
+            return JSONUtil.toBean(object,tClass);
+        }
+        return null;
     }
 
     private List<String> processAttrIntegral(MarketIntegralNameForm integralNameForm, DateTime date, String marketNameId) {

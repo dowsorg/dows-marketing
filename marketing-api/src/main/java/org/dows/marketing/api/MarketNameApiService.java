@@ -16,7 +16,7 @@ public interface MarketNameApiService {
     List<MarketCardAttrValVo> getMarketCardName(MarketQueryNameForm nameForm);
 
 
-    boolean removeMarketCardName(String markeNametId);
+    boolean removeMarketCardName(String marketNametId);
 
 
 
@@ -25,6 +25,13 @@ public interface MarketNameApiService {
 
     List<MarketIntegralAttrValVo> getIntegralName(MarketQueryNameForm nameForm);
 
-
+    /**
+     * 获取营销名称配置通用
+     * @param marketNameId
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    <T> T getMarketCardAttrVal(String marketNameId,Class<T> clazz);
 
 }
