@@ -19,6 +19,7 @@ import org.dows.marketing.entity.MarketCouponStoreEntity;
 import org.dows.marketing.form.MarketCouponForm;
 import org.dows.marketing.form.MarketCouponQueryForm;
 import org.dows.marketing.form.MarketListCouponVo;
+import org.dows.marketing.form.SentCouponForm;
 import org.dows.marketing.mapper.MarketCouponMapperJoin;
 import org.dows.marketing.service.MarketCouponService;
 import org.dows.marketing.service.MarketCouponStoreService;
@@ -77,6 +78,11 @@ public class MarketCouponBiz implements MarketCouponApi  {
             return couponStoreService.saveOrUpdateBatch(marketCouponStoreEntities);
     }
 
+    @Override
+    public Boolean senCoupon(SentCouponForm sentCoupon) {
+        return null;
+    }
+    @Override
     public IPage getCouponList(MarketCouponQueryForm queryForm) {
 
         MPJLambdaWrapper<MarketCouponEntity> mpjLambdaWrapper = new MPJLambdaWrapper<MarketCouponEntity>()

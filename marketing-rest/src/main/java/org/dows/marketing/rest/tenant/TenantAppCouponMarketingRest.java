@@ -6,11 +6,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
-import org.dows.marketing.MarketCouponBiz;
+import org.dows.marketing.api.MarketCouponApi;
 import org.dows.marketing.api.MarketSettingApi;
 import org.dows.marketing.form.*;
-import org.dows.marketing.service.MarketCategoryService;
-import org.dows.marketing.vo.MarketQuerySettingVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ import java.util.List;
 @RequestMapping("tenant/marketing/coupon/app")
 public class TenantAppCouponMarketingRest {
     @Autowired
-    MarketCouponBiz marketCouponBiz;
+    MarketCouponApi marketCouponApi;
     @Autowired
     MarketSettingApi marketSettingApi;
     @PostMapping("/queryMarketStatus")
@@ -37,9 +35,8 @@ public class TenantAppCouponMarketingRest {
 
     @PutMapping("/addCoupon")
     @ApiOperation("优惠卷-增加")
-    public Response<Boolean> addCoupon(@Valid  @RequestBody
-                                           MarketCouponForm couponForm){
-        if (marketCouponBiz.addOrUpdateCoupon(couponForm)){
+    public Response<Boolean> addCoupon(@Valid  @RequestBody MarketCouponForm couponForm){
+        if (marketCouponApi.addOrUpdateCoupon(couponForm)){
             return Response.ok();
         }else {
             return Response.fail();
@@ -47,11 +44,16 @@ public class TenantAppCouponMarketingRest {
 
     }
 
+    @PostMapping ("/senCoupon")
+    @ApiOperation("优惠卷-发放")
+    public Response<Boolean> senCoupon(@Valid @RequestBody SentCouponForm sentCoupon){
+        return Response.ok(marketCouponApi.senCoupon(sentCoupon));
+    }
+
     @PostMapping ("/getCouponList")
     @ApiOperation("优惠卷-列表")
-    public Response<IPage<MarketListCouponVo>> getCouponList(@Valid @RequestBody
-                                                                 MarketCouponQueryForm queryForm){
-        IPage<MarketListCouponVo> couponList = marketCouponBiz.getCouponList(queryForm);
+    public Response<IPage<MarketListCouponVo>> getCouponList(@Valid @RequestBody MarketCouponQueryForm queryForm){
+        IPage<MarketListCouponVo> couponList = marketCouponApi.getCouponList(queryForm);
         return Response.ok(couponList);
     }
 
