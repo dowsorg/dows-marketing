@@ -69,7 +69,6 @@ public class TenantAppCouponMarketingRest {
     @ApiOperation("优惠卷-发放记录列表")
     public Response provideGiveList(){
 
-
         return Response.ok();
     }
 
