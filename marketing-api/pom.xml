@@ -22,11 +22,9 @@
             <artifactId>marketing-pojo</artifactId>
             <version>20220701-SNAPSHOT</version>
         </dependency>
-
         <dependency>
-            <artifactId>marketing-crud</artifactId>
-            <groupId>org.dows.saas</groupId>
-            <version>20220701-SNAPSHOT</version>
+            <groupId>org.dows.framework</groupId>
+            <artifactId>crud-mybatis</artifactId>
         </dependency>
     </dependencies>
 
