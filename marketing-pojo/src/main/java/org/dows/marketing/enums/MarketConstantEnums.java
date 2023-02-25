@@ -15,16 +15,19 @@ import java.util.Map;
 public enum MarketConstantEnums {
 
 
-    LQ_ZDLQ("自动领取",11),
-    LQ_SDLQ("手动领取",12),
+    LQ_ZDLQ("自动领取","11"),
+    LQ_SDLQ("手动领取","12"),
 
-    TS_LQTX("优惠券领取提醒",21),
-    TS_DZTX("优惠券到账通知",22)
+    TS_LQTX("优惠券领取提醒","21"),
+    TS_DZTX("优惠券到账通知","22"),
+
+    FF_FFJL("发放记录","31"),
+
     ;
 
     private String name;
 
-    private Integer code;
+    private String code;
 
 
     public static String getMarketName(String code){

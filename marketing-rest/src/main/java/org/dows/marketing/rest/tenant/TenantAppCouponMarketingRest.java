@@ -47,11 +47,14 @@ public class TenantAppCouponMarketingRest {
     @PostMapping ("/senCoupon")
     @ApiOperation("优惠卷-发放")
     public Response<Boolean> senCoupon(@Valid @RequestBody SentCouponForm sentCoupon){
-        return Response.ok(marketCouponApi.senCoupon(sentCoupon));
+        if (marketCouponApi.senCoupon(sentCoupon))
+            return Response.ok();
+        else
+            return Response.fail();
     }
 
     @PostMapping ("/getCouponList")
-    @ApiOperation("优惠卷-列表")
+    @ApiOperation("门店优惠卷-列表")
     public Response<IPage<MarketListCouponVo>> getCouponList(@Valid @RequestBody MarketCouponQueryForm queryForm){
         IPage<MarketListCouponVo> couponList = marketCouponApi.getCouponList(queryForm);
         return Response.ok(couponList);

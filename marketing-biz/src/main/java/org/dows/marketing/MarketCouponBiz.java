@@ -1,33 +1,31 @@
 package org.dows.marketing;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.yulichang.base.MPJBaseMapper;
-import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.dows.framework.api.Response;
 import org.dows.marketing.api.MarketCouponApi;
+import org.dows.marketing.entity.MarketActorEntity;
+import org.dows.marketing.entity.MarketActorRecordEntity;
 import org.dows.marketing.entity.MarketCouponEntity;
 import org.dows.marketing.entity.MarketCouponStoreEntity;
+import org.dows.marketing.enums.MarketConstantEnums;
 import org.dows.marketing.form.MarketCouponForm;
 import org.dows.marketing.form.MarketCouponQueryForm;
 import org.dows.marketing.form.MarketListCouponVo;
 import org.dows.marketing.form.SentCouponForm;
 import org.dows.marketing.mapper.MarketCouponMapperJoin;
-import org.dows.marketing.service.MarketCouponService;
-import org.dows.marketing.service.MarketCouponStoreService;
-import org.dows.marketing.service.MarketNameService;
+import org.dows.marketing.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +47,15 @@ public class MarketCouponBiz implements MarketCouponApi  {
     @Autowired
     MarketCouponStoreService couponStoreService;
 
+    @Autowired
+    MarketActorService actorService;
+
+    @Autowired
+    MarketActorRecordService actorRecordService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean addOrUpdateCoupon(MarketCouponForm couponForm) {
-
 
         MarketCouponEntity couponEntity = new MarketCouponEntity();
             if (couponForm.getId() != null){
@@ -75,13 +78,48 @@ public class MarketCouponBiz implements MarketCouponApi  {
                             .setCouponId(couponEntity.getId())
                             .setTenantId(tenantId)
             ).collect(Collectors.toList());
+
             return couponStoreService.saveOrUpdateBatch(marketCouponStoreEntities);
     }
 
     @Override
+    @Transactional
     public Boolean senCoupon(SentCouponForm sentCoupon) {
-        return null;
+
+        //发放记录
+        List<MarketActorEntity> marketActorEntities = sentCoupon.getUserIds().stream().map(x -> {
+            MarketActorEntity actorEntity = new MarketActorEntity();
+            actorEntity.setAccountId(x);
+            actorEntity.setMarketId(sentCoupon.getCouponId());
+            return actorEntity;
+        }).collect(Collectors.toList());
+
+        MarketCouponEntity couponEntity = couponService.getById(sentCoupon.getCouponId());
+
+        if (couponEntity == null){
+            return false;
+        }
+
+        //领取记录
+        List<MarketActorRecordEntity> marketActorRecordEntityList  = marketActorEntities.stream().map(
+               x-> {
+                  if (MarketConstantEnums.LQ_ZDLQ.getCode().equals(couponEntity.getReceiveMethod())){
+                       MarketActorRecordEntity marketActorRecord = new MarketActorRecordEntity();
+                       marketActorRecord.setRuleJson(MarketConstantEnums.LQ_ZDLQ.getCode());
+                       marketActorRecord.setDt(new Date());
+                       marketActorRecord.setMarketId(x.getMarketId());
+                       marketActorRecord.setAccountId(x.getAccountId());
+                       return marketActorRecord;
+                   }
+                  return null;
+               }
+        ).filter(x -> x != null).collect(Collectors.toList());
+
+
+        actorRecordService.saveOrUpdateBatch(marketActorRecordEntityList);
+        return actorService.saveOrUpdateBatch(marketActorEntities);
     }
+
     @Override
     public IPage getCouponList(MarketCouponQueryForm queryForm) {
 
