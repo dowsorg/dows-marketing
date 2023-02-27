@@ -46,6 +46,9 @@ public class MarketActorEntity  {
     @ApiModelProperty("时间戳")
     private Date dt;
 
+    @ApiModelProperty("使用状态-0：未使用，1：已使用,2:已过期")
+    private Integer useStatus;
+
 
 }
 

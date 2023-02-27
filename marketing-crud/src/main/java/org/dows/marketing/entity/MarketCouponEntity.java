@@ -48,6 +48,9 @@ public class MarketCouponEntity {
     @ApiModelProperty("发型量")
     private Integer provideNum;
 
+    @ApiModelProperty("优惠卷剩余量")
+    private Integer remainingQuantity;
+
     @ApiModelProperty("领取方式")
     private String receiveMethod;
 
@@ -68,5 +71,8 @@ public class MarketCouponEntity {
 
     @ApiModelProperty(value = "开启状态：0没启用，1启用")
     private Integer status;
+
+    @ApiModelProperty(value = "发放条件：0-新人登录，1-邀请好友，2-完善资料")
+    private Integer sendEvent;
 
 }

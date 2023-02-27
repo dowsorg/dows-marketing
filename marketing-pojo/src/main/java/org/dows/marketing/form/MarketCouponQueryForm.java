@@ -1,6 +1,5 @@
 package org.dows.marketing.form;
 
-import cn.hutool.db.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

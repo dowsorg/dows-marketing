@@ -14,12 +14,10 @@ import org.dows.marketing.entity.MarketActorRecordEntity;
 import org.dows.marketing.entity.MarketCouponEntity;
 import org.dows.marketing.entity.MarketCouponStoreEntity;
 import org.dows.marketing.enums.MarketConstantEnums;
-import org.dows.marketing.form.MarketCouponForm;
-import org.dows.marketing.form.MarketCouponQueryForm;
-import org.dows.marketing.form.MarketListCouponVo;
-import org.dows.marketing.form.SentCouponForm;
+import org.dows.marketing.form.*;
 import org.dows.marketing.mapper.MarketCouponMapperJoin;
 import org.dows.marketing.service.*;
+import org.dows.marketing.vo.MarkerCouponRecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -148,5 +146,10 @@ public class MarketCouponBiz implements MarketCouponApi  {
         IPage<MarketListCouponVo> page = couponMapper.selectJoinPage(new Page<MarketListCouponVo>(queryForm.getCurrent(),queryForm.getSize()) ,
                 MarketListCouponVo.class,mpjLambdaWrapper);
         return page;
+    }
+
+    @Override
+    public IPage<MarkerCouponRecordVo> provideGiveList(MarketProvideGiveQuery marketProvideGiveQuery) {
+        return null;
     }
 }

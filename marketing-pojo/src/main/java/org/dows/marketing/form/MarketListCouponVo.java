@@ -1,6 +1,5 @@
 package org.dows.marketing.form;
 
-import cn.hutool.core.date.DateTime;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -31,6 +30,9 @@ public class MarketListCouponVo implements Serializable {
     @ApiModelProperty("发型量")
     private Integer provideNum;
 
+    @ApiModelProperty("优惠卷剩余量")
+    private Integer remainingQuantity;
+
     @ApiModelProperty("领取方式")
     private String receiveMethod;
 
@@ -44,7 +46,7 @@ public class MarketListCouponVo implements Serializable {
     private Integer marketState;
 
     @ApiModelProperty(value = "创建时间")
-    private DateTime createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "门店标识-ID")
     private Long storeId;
