@@ -33,6 +33,9 @@ public class MarketListCouponVo implements Serializable {
     @ApiModelProperty("优惠卷剩余量")
     private Integer remainingQuantity;
 
+    @ApiModelProperty("使用量")
+    private Integer usedNum;
+
     @ApiModelProperty("领取方式")
     private String receiveMethod;
 

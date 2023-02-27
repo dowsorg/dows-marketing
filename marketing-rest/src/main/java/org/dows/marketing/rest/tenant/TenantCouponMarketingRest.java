@@ -55,8 +55,9 @@ public class TenantCouponMarketingRest   {
 
     @GetMapping ("/getCouponRecordList")
     @ApiOperation("优惠卷-领取记录列表")
-    public Response getCouponRecordList(){
-
+    public Response getCouponRecordList(@Valid @RequestBody
+                                            MarketProvideGiveQuery marketProvideGiveQuery){
+        IPage<MarkerCouponRecordVo>  iPage = marketCouponApi.provideGiveList(marketProvideGiveQuery);
 
         return Response.ok();
     }
@@ -66,8 +67,8 @@ public class TenantCouponMarketingRest   {
     public Response<IPage<MarkerCouponRecordVo>> provideGiveList(@Valid @RequestBody
                                                                       MarketProvideGiveQuery marketProvideGiveQuery ){
 
-        IPage<MarkerCouponRecordVo>  iPage = marketCouponApi.provideGiveList(marketProvideGiveQuery);
-        return Response.ok(iPage);
+
+        return Response.ok();
     }
 
 

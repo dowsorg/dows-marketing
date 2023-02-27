@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
 import org.dows.marketing.api.MarketCouponApi;
 import org.dows.marketing.api.MarketSettingApi;
+import org.dows.marketing.entity.MarketCouponEntity;
 import org.dows.marketing.form.*;
+import org.dows.marketing.service.MarketCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class TenantAppCouponMarketingRest {
     MarketCouponApi marketCouponApi;
     @Autowired
     MarketSettingApi marketSettingApi;
+
+    @Autowired
+    MarketCouponService marketCouponService;
     @PostMapping("/queryMarketStatus")
     @ApiOperation("营销功能-开关状态查询")
     public Response<List<MarketSettingStroreFrom>> queryMarketStatus( Long storeId){
@@ -58,6 +63,13 @@ public class TenantAppCouponMarketingRest {
     public Response<IPage<MarketListCouponVo>> getCouponList(@Valid @RequestBody MarketCouponQueryForm queryForm){
         IPage<MarketListCouponVo> couponList = marketCouponApi.getCouponList(queryForm);
         return Response.ok(couponList);
+    }
+
+    @GetMapping ("/getCouponInfo")
+    @ApiOperation("优惠卷-详情")
+    public Response<MarketCouponEntity> marketCouponApi(Long marketId){
+        MarketCouponEntity marketCoupon = marketCouponService.getById(marketId);
+        return Response.ok(marketCoupon);
     }
 
     @GetMapping ("/getCouponRecordList")

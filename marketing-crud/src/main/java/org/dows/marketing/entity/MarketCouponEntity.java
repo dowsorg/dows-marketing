@@ -1,6 +1,5 @@
 package org.dows.marketing.entity;
 
-import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,9 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @ToString
@@ -51,6 +48,9 @@ public class MarketCouponEntity {
     @ApiModelProperty("优惠卷剩余量")
     private Integer remainingQuantity;
 
+    @ApiModelProperty("使用量")
+    private Integer usedNum;
+
     @ApiModelProperty("领取方式")
     private String receiveMethod;
 
@@ -67,7 +67,7 @@ public class MarketCouponEntity {
     private String TenantId;
 
     @ApiModelProperty(value = "租户ID")
-    private DateTime createTime;
+    private Date createTime;
 
     @ApiModelProperty(value = "开启状态：0没启用，1启用")
     private Integer status;

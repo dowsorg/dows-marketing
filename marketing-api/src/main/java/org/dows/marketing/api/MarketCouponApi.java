@@ -18,4 +18,5 @@ public interface MarketCouponApi {
      * @return
      */
     IPage<MarkerCouponRecordVo> provideGiveList(MarketProvideGiveQuery marketProvideGiveQuery);
+
 }
