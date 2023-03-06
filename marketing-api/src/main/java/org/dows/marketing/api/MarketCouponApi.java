@@ -3,6 +3,7 @@ package org.dows.marketing.api;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.dows.marketing.form.*;
 import org.dows.marketing.vo.MarkerCouponRecordVo;
+import org.dows.marketing.vo.MarkerSendCouponVo;
 
 public interface MarketCouponApi {
 
@@ -19,4 +20,5 @@ public interface MarketCouponApi {
      */
     IPage<MarkerCouponRecordVo> provideGiveList(MarketProvideGiveQuery marketProvideGiveQuery);
 
+    IPage<MarkerSendCouponVo> sendCouponList(MarketSendCouponQuery marketSendCouponQuery);
 }

@@ -11,6 +11,8 @@ import java.util.List;
 public class MarketListCouponVo implements Serializable {
     private static final long serialVersionUID = -298685452340456665L;
 
+    @ApiModelProperty("主键id")
+    private Long id;
 
     @ApiModelProperty(value = "营销分类code-条目码-类型")
     private String categoryCode;

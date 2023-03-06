@@ -1,25 +1,20 @@
 package org.dows.marketing.rest.tenant;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dows.framework.api.Response;
-import org.dows.marketing.MarketCouponBiz;
 import org.dows.marketing.api.MarketCouponApi;
-import org.dows.marketing.form.MarketCouponForm;
-import org.dows.marketing.form.MarketCouponQueryForm;
-import org.dows.marketing.form.MarketListCouponVo;
-import org.dows.marketing.form.MarketProvideGiveQuery;
+import org.dows.marketing.form.*;
 import org.dows.marketing.service.MarketCategoryService;
 import org.dows.marketing.vo.MarkerCouponRecordVo;
+import org.dows.marketing.vo.MarkerSendCouponVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Api(tags = "【总部】营销-优惠卷")
 @Slf4j
@@ -55,20 +50,20 @@ public class TenantCouponMarketingRest   {
 
     @GetMapping ("/getCouponRecordList")
     @ApiOperation("优惠卷-领取记录列表")
-    public Response getCouponRecordList(@Valid @RequestBody
+    public Response<IPage<MarkerCouponRecordVo>> getCouponRecordList(@Valid @RequestBody
                                             MarketProvideGiveQuery marketProvideGiveQuery){
         IPage<MarkerCouponRecordVo>  iPage = marketCouponApi.provideGiveList(marketProvideGiveQuery);
 
-        return Response.ok();
+        return Response.ok(iPage);
     }
 
-    @GetMapping ("/provideGiveList")
+    @GetMapping ("/sendCouponList")
     @ApiOperation("优惠卷-发放记录列表")
-    public Response<IPage<MarkerCouponRecordVo>> provideGiveList(@Valid @RequestBody
-                                                                      MarketProvideGiveQuery marketProvideGiveQuery ){
+    public Response<IPage<MarkerSendCouponVo>> sendCouponList(@Valid @RequestBody
+                                                                MarketSendCouponQuery marketSendCouponQuery ){
+        IPage<MarkerSendCouponVo>  iPage = marketCouponApi.sendCouponList(marketSendCouponQuery);
 
-
-        return Response.ok();
+        return Response.ok(iPage);
     }
 
 

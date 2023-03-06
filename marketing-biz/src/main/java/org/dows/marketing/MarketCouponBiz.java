@@ -18,11 +18,11 @@ import org.dows.marketing.form.*;
 import org.dows.marketing.mapper.MarketCouponMapperJoin;
 import org.dows.marketing.service.*;
 import org.dows.marketing.vo.MarkerCouponRecordVo;
+import org.dows.marketing.vo.MarkerSendCouponVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -153,6 +153,11 @@ public class MarketCouponBiz implements MarketCouponApi  {
     @Override
     public IPage<MarkerCouponRecordVo> provideGiveList(MarketProvideGiveQuery marketProvideGiveQuery) {
 
+        return null;
+    }
+
+    @Override
+    public IPage<MarkerSendCouponVo> sendCouponList(MarketSendCouponQuery marketSendCouponQuery) {
         return null;
     }
 }
