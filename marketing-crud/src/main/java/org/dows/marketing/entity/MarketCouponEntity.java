@@ -28,7 +28,7 @@ public class MarketCouponEntity {
     private Long id;
 
     @ApiModelProperty(value = "分类code-条目码-优惠卷类型")
-    private String categoryCode;
+    private Integer categoryCode;
 
     @ApiModelProperty("名称")
     private String marketName;

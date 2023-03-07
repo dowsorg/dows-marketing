@@ -129,8 +129,9 @@ public class MarketCouponBiz implements MarketCouponApi  {
                 .leftJoin(MarketCouponStoreEntity.class, MarketCouponStoreEntity::getCouponId, MarketCouponEntity::getId);
                 //.leftJoin(StoreInstance.class,StoreInstance::getId,MarketCouponStoreEntity::getStoreId);
 
-        mpjLambdaWrapper.eq(MarketCouponEntity::getCategoryCode,queryForm.getCategoryCode());
-
+        if (queryForm.getCategoryCode() != null){
+            mpjLambdaWrapper.eq(MarketCouponEntity::getCategoryCode,queryForm.getCategoryCode());
+        }
         if (queryForm.getMarketName() != null){
             mpjLambdaWrapper.like(MarketCouponEntity::getMarketName, queryForm.getMarketName());
         }

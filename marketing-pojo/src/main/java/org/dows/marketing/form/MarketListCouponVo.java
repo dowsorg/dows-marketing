@@ -15,7 +15,7 @@ public class MarketListCouponVo implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "营销分类code-条目码-类型")
-    private String categoryCode;
+    private Integer categoryCode;
 
     @ApiModelProperty("名称")
     private String marketName;

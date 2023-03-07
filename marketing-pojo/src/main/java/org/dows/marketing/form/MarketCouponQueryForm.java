@@ -32,5 +32,5 @@ public class MarketCouponQueryForm  implements Serializable {
     private int size = 10;
 
     @ApiModelProperty("优惠卷类型：12001-定向发卷，12002-全体发卷，12003-叠加卷")
-    private int categoryCode;
+    private Integer categoryCode;
 }
