@@ -16,7 +16,7 @@ public class MarkerSendCouponVo {
     private String marketName;
 
     @ApiModelProperty(value = "分类code-条目码-优惠卷类型")
-    private String categoryCode;
+    private Integer categoryCode;
 
     @ApiModelProperty("面额")
     private Integer couponAmount;
