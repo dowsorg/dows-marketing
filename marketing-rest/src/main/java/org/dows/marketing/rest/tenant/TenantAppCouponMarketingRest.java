@@ -1,5 +1,6 @@
 package org.dows.marketing.rest.tenant;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,11 +12,13 @@ import org.dows.marketing.api.MarketSettingApi;
 import org.dows.marketing.entity.MarketCouponEntity;
 import org.dows.marketing.form.*;
 import org.dows.marketing.service.MarketCouponService;
+import org.dows.marketing.vo.MarketCouponVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "【门店APP】营销-优惠卷")
 @Slf4j
@@ -62,14 +65,19 @@ public class TenantAppCouponMarketingRest {
     @ApiOperation("门店优惠卷-列表")
     public Response<IPage<MarketListCouponVo>> getCouponList(@Valid @RequestBody MarketCouponQueryForm queryForm){
         IPage<MarketListCouponVo> couponList = marketCouponApi.getCouponList(queryForm);
+        couponList.getRecords().stream().map(
+                x-> {x.setIdStr(String.valueOf(x.getId())); return x;}
+        ).collect(Collectors.toList());
         return Response.ok(couponList);
     }
 
     @GetMapping ("/getCouponInfo")
     @ApiOperation("优惠卷-详情")
-    public Response<MarketCouponEntity> marketCouponApi(Long marketId){
+    public Response<MarketCouponVo> marketCouponApi(String marketId){
         MarketCouponEntity marketCoupon = marketCouponService.getById(marketId);
-        return Response.ok(marketCoupon);
+        MarketCouponVo marketCouponVo = new MarketCouponVo();
+        BeanUtil.copyProperties(marketCoupon,marketCouponVo);
+        return Response.ok(marketCouponVo);
     }
 
     @GetMapping ("/getCouponRecordList")

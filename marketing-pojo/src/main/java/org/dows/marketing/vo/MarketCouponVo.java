@@ -1,4 +1,4 @@
-package org.dows.marketing.form;
+package org.dows.marketing.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,16 +8,14 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class MarketListCouponVo implements Serializable {
-    private static final long serialVersionUID = -298685452340456665L;
+public class MarketCouponVo implements Serializable {
+
+    private static final long serialVersionUID = 2986866754777456665L;
 
     @ApiModelProperty("主键id")
-    private Long id;
+    private String  id;
 
-    @ApiModelProperty("主键idStr")
-    private String idStr;
-
-    @ApiModelProperty(value = "营销分类code-条目码-类型")
+    @ApiModelProperty(value = "分类code-条目码-优惠卷类型")
     private Integer categoryCode;
 
     @ApiModelProperty("名称")
@@ -48,21 +46,20 @@ public class MarketListCouponVo implements Serializable {
     private String pushMode;
 
     @ApiModelProperty(value = "使用范围（门店标识-ID）")
-    private List<Long> storeIds;
+    private String storeIds;
 
-    @ApiModelProperty(value = "是否启用：0-无，1-有")
-    private Integer marketState;
+    @ApiModelProperty(value = "营销ID")
+    private Long marketNameId;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "租户ID")
+    private String TenantId;
+
+    @ApiModelProperty(value = "租户ID")
     private Date createTime;
-
-    @ApiModelProperty(value = "门店标识-ID")
-    private Long storeId;
 
     @ApiModelProperty(value = "开启状态：0没启用，1启用")
     private Integer status;
 
-    @ApiModelProperty(value = "开启状态：0没启用，1启用")
-    private String storeName;
-
+    @ApiModelProperty(value = "发放条件：0-新人登录，1-邀请好友，2-完善资料")
+    private Integer sendEvent;
 }
